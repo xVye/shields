@@ -306,6 +306,13 @@ class Server {
       public: { rasterUrl },
     } = config
 
+    camp.route(/headers$/, (query, match, end, request) => {
+      if ('Cache-Control' in query) {
+        request.res.setHeader('Cache-Control', query['Cache-Control'])
+      }
+      end('hello')
+    })
+
     camp.route(/\.(gif|jpg)$/, (query, match, end, request) => {
       const [, format] = match
       makeSend(
